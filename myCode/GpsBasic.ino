@@ -1,11 +1,4 @@
-// this sketch will allow you to bypass the Atmega chip
-// and connect the Ultimate GPS directly to the USB/Serial
-// chip converter.
- 
-// Connect VIN to +5V
-// Connect GND to Ground
-// Connect GPS RX (data into GPS) to Digital 0
-// Connect GPS TX (data out from GPS) to Digital 1
+
 String monthDB[] = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
 char input = ' ';
 void setup() {
@@ -24,7 +17,7 @@ void loop() {
    // input = Serial.read();
   //}
     if(Serial1.read() == '$'){
-      thing = Serial1.readStringUntil('$');
+      thing = Serial1.readStringUntil('$');	//raw Gps data, bad variable naming
       //Serial.print('$' + thing);
      //thing = Serial1.readStringUntil('*');
      //Serial.print('$' + thing + '*');
@@ -36,6 +29,7 @@ void loop() {
       thing.toCharArray(current,thing.length());
       int i = 0;
       
+      //Lots of Parsing
       //skip the letters
       while(current[i] != ','){
         i++;
@@ -123,6 +117,7 @@ void loop() {
       year += current[i];
       i++;
 
+	//Output on demand, only inlucde Gps data if there is a fix
       if(Serial.read() == '!'){
         Serial.println("Time: " + gmt + " GMT");
         Serial.println(month + " " + day + ',' + " " + year);
